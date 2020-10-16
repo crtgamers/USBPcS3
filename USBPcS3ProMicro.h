@@ -22,8 +22,8 @@
 * junto con este programa. Si no, vea <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _PS3PAD_H_
-#define _PS3PAD_H_
+#ifndef _USBPCS3PROMICRO_H_
+#define _USBPCS3PROMICRO_H_
 
 	/* Incluidos: */
 		#include <avr/io.h>
