@@ -30,9 +30,7 @@ void setup_pins(void);
 static const uint8_t digital_dir_lookup[16] = {8, 2, 6, 8, 4, 3, 5, 8, 0, 1, 7, 8, 8, 8, 8, 8};
 
 int main(void) {
-	uint8_t pad_up, pad_down, pad_left, pad_right, pad_cross, pad_triangle, pad_circle, pad_square, pad_l2,
-	pad_r2, pad_start, pad_select, pad_l3, pad_r3, pad_l1, pad_r1, pad_left_analog_x,
-	pad_left_analog_y, pad_right_analog_x, pad_right_analog_y;
+	uint8_t pad_select, pad_start, pad_up, pad_down, pad_left, pad_right, pad_triangulo, pad_circulo, pad_cuadrado, pad_equis, pad_l3, pad_r3, pad_l2, pad_r2, pad_l1, pad_r1, pad_ps3;
 
 	// Ajuste el reloj a 16 Mhz
 	CPU_PRESCALE(0);
@@ -51,23 +49,25 @@ int main(void) {
 	for (;;) {
 		vs_reset_watchdog();
 
+		pad_select =  !bit_check(PIND, 3);
+		pad_start =  !bit_check(PIND, 2);
 		pad_up = !bit_check(PIND, 1);
 		pad_down = !bit_check(PIND, 0);
 		pad_left = !bit_check(PIND, 4);
 		pad_right = !bit_check(PINC, 6);
-		pad_triangle = !bit_check(PIND, 7);
-		pad_circle = !bit_check(PINE, 6);
-		pad_square = !bit_check(PINB, 4);
-		pad_cross = !bit_check(PINB, 5);
-		pad_l2 =  !bit_check(PINB, 6);
-		pad_r2 =  !bit_check(PINB, 2);
-		pad_start =  !bit_check(PIND, 2);
-		pad_select =  !bit_check(PIND, 3);
+		pad_triangulo = !bit_check(PIND, 7);
+		pad_circulo = !bit_check(PINE, 6);
+		pad_cuadrado = !bit_check(PINB, 4);
+		pad_equis = !bit_check(PINB, 5);
 		pad_l3 =  !bit_check(PINF, 6);
 		pad_r3 =  !bit_check(PINF, 7);
+		pad_l2 =  !bit_check(PINB, 2);
+		pad_r2 =  !bit_check(PINB, 6);
 		pad_l1 = !bit_check(PINB, 1);
 		pad_r1 = !bit_check(PINB, 3);
+		pad_ps3 = !bit_check(PINF, 5);
 
+		/**
 		pad_left_analog_x = pad_left_analog_y = pad_right_analog_x = pad_right_analog_y = 0x7F;
 
 		if(!bit_check(PINF, 4)) {
@@ -75,16 +75,16 @@ int main(void) {
 		} else if(!bit_check(PINF, 5)) {
 			pad_right_analog_y = 0xFF;
 		}
+		*/
 
-		gamepad_state.cross_btn = pad_cross;
+		gamepad_state.cross_btn = pad_equis;
 		gamepad_state.cross_axis = gamepad_state.cross_btn * 0xFF;
-		gamepad_state.circle_btn = pad_circle;
+		gamepad_state.circle_btn = pad_circulo;
 		gamepad_state.circle_axis = gamepad_state.circle_btn * 0xFF;
-		gamepad_state.square_btn = pad_square;
+		gamepad_state.square_btn = pad_cuadrado;
 		gamepad_state.square_axis = gamepad_state.square_btn * 0xFF;
-		gamepad_state.triangle_btn = pad_triangle;
+		gamepad_state.triangle_btn = pad_triangulo;
 		gamepad_state.triangle_axis = gamepad_state.triangle_btn * 0xFF;
-
 		gamepad_state.l1_btn = pad_l1;
 		gamepad_state.l1_axis = gamepad_state.l1_btn * 0xFF;
 		gamepad_state.r1_btn = pad_r1;
@@ -100,15 +100,17 @@ int main(void) {
 		gamepad_state.start_btn = pad_start;
 		gamepad_state.select_btn = pad_select;
 
-		gamepad_state.ps_btn = pad_start && pad_select;
+		gamepad_state.ps_btn = pad_ps3;
 
 		gamepad_state.l3_btn = pad_l3;
 		gamepad_state.r3_btn = pad_r3;
 
+		/**
 		gamepad_state.l_x_axis = pad_left_analog_x;
 		gamepad_state.l_y_axis = pad_left_analog_y;
 		gamepad_state.r_x_axis = pad_right_analog_x;
 		gamepad_state.r_y_axis = pad_right_analog_y;
+		*/
 
 		vs_send_pad_state();
 	}
